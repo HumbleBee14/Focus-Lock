@@ -1,0 +1,48 @@
+# Ignore Android Studio specific files
+.idea/
+*.iml
+
+# Ignore Gradle files
+.gradle/
+**/build/
+
+# Ignore local properties
+local.properties
+
+# Ignore Native build files
+.externalNativeBuild/
+.cxx/
+
+# Ignore log files
+*.log
+
+# Ignore compiled Java class files
+*.class
+
+# Ignore APKs and generated assets
+*.apk
+*.aab
+*.dex
+
+# Ignore caches
+captures/
+
+# Ignore dependency directories
+app/libs/
+app/release/
+app/debug/
+
+# Ignore Gradle wrapper binaries
+gradle/wrapper/
+gradle/wrapper/dists/
+gradlew
+gradlew.bat
+
+# Ignore Keystore files (important for security)
+*.jks
+*.keystore
+
+# Ignore temporary files
+*.swp
+*~.nib
+*.DS_Store

@@ -4,16 +4,120 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/deepBlue"
     tools:context=".LockScreenActivity">
 
+    <!-- Timer Countdown -->
     <TextView
-        android:id="@+id/lockMessage"
+        android:id="@+id/timerCountdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Focus Mode Active!"
-        android:textSize="24sp"
+        android:text="00:25"
+        android:textSize="50sp"
+        android:textColor="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+
+    <!-- Motivational Quote / Message -->
+    <TextView
+        android:id="@+id/lockscreenMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stay focused!"
+        android:textSize="22sp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/timerCountdown"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <!-- Unlock Button -->
+    <Button
+        android:id="@+id/unlockPromptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unlock"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_button"
+        app:layout_constraintTop_toBottomOf="@id/lockscreenMessage"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <!-- PIN Input (Initially Hidden) -->
+    <LinearLayout
+        android:id="@+id/unlockInputsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/unlockPromptButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <EditText
+            android:id="@+id/pinInput"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter PIN"
+            android:textColor="@color/white"
+            android:textColorHint="@color/lightGrey"
+            android:inputType="numberPassword"
+            android:background="@drawable/pin_background"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf="@id/unlockPromptButton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <Button
+            android:id="@+id/unlockButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm Unlock"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_button"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/pinInput"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
+    <!-- Emergency Access Apps (Initially Visible, Hidden When PIN is Open) -->
+    <LinearLayout
+        android:id="@+id/emergencyAppsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/unlockInputsContainer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <Button
+            android:id="@+id/emergencyCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Call"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_button"/>
+
+        <Button
+            android:id="@+id/emergencySMS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SMS"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_button"/>
+
+        <Button
+            android:id="@+id/emergencyEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_button"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

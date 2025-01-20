@@ -3,15 +3,20 @@ package com.grepguru.focuslock;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.accessibility.AccessibilityEvent;
 
 public class AppBlockerService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        String packageName = event.getPackageName().toString();
+        SharedPreferences preferences = getSharedPreferences("FocusLockPrefs", MODE_PRIVATE);
+        boolean isLocked = preferences.getBoolean("isLocked", false);
 
-        if (!isAllowedApp(packageName)) {
-            launchLockScreen();
+        if (isLocked) {
+            String packageName = event.getPackageName().toString();
+            if (!isAllowedApp(packageName)) {
+                launchLockScreen();
+            }
         }
     }
 

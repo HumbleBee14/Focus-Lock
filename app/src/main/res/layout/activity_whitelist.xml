@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkBackground"
+    tools:context=".WhitelistActivity">
+
+    <TextView
+        android:id="@+id/whitelistTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Allowed Apps During Lock"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <!-- Phone Call Checkbox -->
+    <CheckBox
+        android:id="@+id/phoneCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Allow Calls"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/whitelistTitle"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <!-- SMS Checkbox -->
+    <CheckBox
+        android:id="@+id/smsCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Allow SMS"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/phoneCheckBox"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <!-- Email Checkbox -->
+    <CheckBox
+        android:id="@+id/emailCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Allow Email"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/smsCheckBox"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:background="@drawable/rounded_button"
+        app:layout_constraintTop_toBottomOf="@id/emailCheckBox"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.FocusLock" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Customize your light theme here -->
+        <item name="android:windowBackground">@color/deepBlue</item>
+        <item name="android:colorBackground">@color/darkBackground</item>
+        <item name="android:statusBarColor">@color/darkBackground</item>
+        <item name="android:navigationBarColor">@color/buttonBackground</item>
     </style>
 
     <style name="Theme.FocusLock" parent="Base.Theme.FocusLock" />

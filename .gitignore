@@ -2,11 +2,11 @@
 .idea/
 *.iml
 
-# Ignore Gradle files
+# Ignore Gradle-related cache and build files
 .gradle/
 **/build/
 
-# Ignore local properties
+# Ignore local properties (SDK-specific)
 local.properties
 
 # Ignore Native build files
@@ -33,10 +33,7 @@ app/release/
 app/debug/
 
 # Ignore Gradle wrapper binaries
-gradle/wrapper/
 gradle/wrapper/dists/
-gradlew
-gradlew.bat
 
 # Ignore Keystore files (important for security)
 *.jks

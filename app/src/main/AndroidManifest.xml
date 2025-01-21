@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FocusLock"
         tools:targetApi="31">
+
 
         <!-- Main Activity (App Launch) -->
         <activity
@@ -41,6 +44,15 @@
             </intent-filter>
         </service>
 
+        <!-- Boot Receiver (Runs on Device Restart) -->
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

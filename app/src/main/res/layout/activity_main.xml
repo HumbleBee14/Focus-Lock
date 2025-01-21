@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightGrey"
+    android:background="@color/luxuryBackground"
     tools:context=".MainActivity">
 
     <!-- Timer Selection Container -->
@@ -18,13 +18,24 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="50dp">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="10dp">
+
         <!-- Hours Picker -->
         <NumberPicker
             android:id="@+id/hoursPicker"
+            android:theme="@style/AppTheme.Picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
+            android:background="@android:color/transparent"
+            android:padding="5dp"
             android:layout_marginEnd="20dp"/>
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,21 +44,32 @@
             android:textSize="18sp"
             android:textColor="@color/white"
             android:layout_marginEnd="20dp"/>
+    </LinearLayout>
 
-        <!-- Minutes Picker -->
-        <NumberPicker
-            android:id="@+id/minutesPicker"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="mins"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:layout_marginStart="10dp"/>
+            <!-- Minutes Picker -->
+            <NumberPicker
+                android:id="@+id/minutesPicker"
+                android:theme="@style/AppTheme.Picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="mins"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="10dp"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Selected Time Display -->

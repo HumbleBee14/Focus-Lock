@@ -8,5 +8,9 @@
         <item name="android:navigationBarColor">@color/buttonBackground</item>
     </style>
 
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
     <style name="Theme.FocusLock" parent="Base.Theme.FocusLock" />
 </resources>

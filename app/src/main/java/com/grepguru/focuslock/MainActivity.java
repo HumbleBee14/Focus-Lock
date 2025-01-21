@@ -67,13 +67,13 @@ public class MainActivity extends AppCompatActivity {
         int[] minuteValues = {0, 1, 10, 20, 30, 40, 50};
         selectedMinutes = minuteValues[minuteIndex];
 
-        selectedTimeDisplay.setText("Lock Time: " + selectedHours + " hrs " + selectedMinutes + " mins");
-
         // Disable button if time is 0h 0m
         if (selectedHours == 0 && selectedMinutes == 0) {
+            selectedTimeDisplay.setText("Set a time to start Focus Lock");
             enableLockButton.setEnabled(false);
             enableLockButton.setAlpha(0.5f); // Greyed out effect
         } else {
+            selectedTimeDisplay.setText("Lock Time: " + selectedHours + " hrs " + selectedMinutes + " mins");
             enableLockButton.setEnabled(true);
             enableLockButton.setAlpha(1f);
         }
@@ -100,10 +100,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
             long lockEndTime = System.currentTimeMillis() + lockDurationMillis;
-            System.out.println("lockEndTime : " + lockEndTime);
+            long uptimeAtLock = android.os.SystemClock.elapsedRealtime(); // Save current uptime
+//            System.out.println("Stored Uptime (MainActivity): " + " " + uptimeAtLock);
 
             editor.putBoolean("isLocked", true);
             editor.putLong("lockEndTime", lockEndTime);  // Save lock expiration time
+            editor.putLong("uptimeAtLock", uptimeAtLock); // Store uptime
+            editor.putBoolean("wasDeviceRestarted", false); // Ensure clean start
             editor.apply();
 
             // Start LockScreenActivity with selected duration

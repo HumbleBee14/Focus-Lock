@@ -24,12 +24,45 @@ public class LockScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         preferences = getSharedPreferences("FocusLockPrefs", Context.MODE_PRIVATE);
 
+        // Detect reboot using system uptime
+        long storedUptime = preferences.getLong("uptimeAtLock", -1);
+//        System.out.println("Stored Uptime (LSA): " + " " + storedUptime);
+
+        long currentUptime = android.os.SystemClock.elapsedRealtime();
+//        System.out.println("Current Uptime (LSA): " + " " + currentUptime);
+//        System.out.println("Difference: " + " " + (currentUptime - storedUptime));
+
+
+        // Check if the device restarted using uptime OR if the wasDeviceRestarted flag is set
+        boolean wasRestarted = preferences.getBoolean("wasDeviceRestarted", false);
+
+        if (storedUptime > currentUptime || wasRestarted) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("isLocked", false);
+            editor.remove("lockEndTime");
+            editor.putBoolean("wasDeviceRestarted", false); // Reset it for safety
+            editor.apply();
+
+            finish(); // Just exit LockScreen
+            return;
+        }
+
+
+        // Normal behaviour if the device is not restarted
         // Retrieve saved lock end time
         long lockEndTime = preferences.getLong("lockEndTime", 0);
         long currentTime = System.currentTimeMillis();
 
-        // If no active lock or timer already expired, exit lock screen
-        if (!preferences.getBoolean("isLocked", false) || currentTime >= lockEndTime) {
+        // If no active lock or timer already expired or device restarted, exit lock screen
+        if (!preferences.getBoolean("isLocked", false) || lockEndTime == 0 || currentTime >= lockEndTime) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("isLocked", false);
+            editor.remove("lockEndTime");
+            editor.apply();
+
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             finish();
             return;
         }
@@ -93,6 +126,24 @@ public class LockScreenActivity extends AppCompatActivity {
         startCountdownTimer(remainingTimeMillis , timerCountdown);
     }
 
+    /*
+    @Override
+    public void onBackPressed() {
+        // Disable back button
+        Toast.makeText(this, "Cannot exit Focus Mode!", Toast.LENGTH_SHORT).show();
+    }
+    */
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Restart LockScreenActivity if user tries to minimize
+        Intent intent = new Intent(this, LockScreenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+
     private void checkPinAndUnlock() {
         String enteredPin = pinInput.getText().toString();
         String savedPin = preferences.getString("lock_pin", "");
@@ -103,6 +154,7 @@ public class LockScreenActivity extends AppCompatActivity {
             // Reset lock state
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isLocked", false); // Mark as unlocked
+            editor.remove("lockEndTime");
             editor.apply();
 
             // Return to MainActivity

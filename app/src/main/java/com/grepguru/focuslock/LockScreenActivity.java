@@ -22,25 +22,38 @@ public class LockScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         preferences = getSharedPreferences("FocusLockPrefs", Context.MODE_PRIVATE);
 
-        // Check if focus lock is active
-        if (!preferences.getBoolean("isLocked", false)) {
-            finish(); // If not locked, close this screen
+        // Retrieve saved lock end time
+        long lockEndTime = preferences.getLong("lockEndTime", 0);
+        long currentTime = System.currentTimeMillis();
+
+        // If no active lock or timer already expired, exit lock screen
+        if (!preferences.getBoolean("isLocked", false) || currentTime >= lockEndTime) {
+            finish();
             return;
         }
 
         setContentView(R.layout.activity_lock_screen);
 
+        // Initializing UI Components
         pinInput = findViewById(R.id.pinInput);
         Button unlockButton = findViewById(R.id.unlockButton);
-
         TextView timerCountdown = findViewById(R.id.timerCountdown);
-        TextView lockMessage = findViewById(R.id.lockscreenMessage);
+//        TextView lockMessage = findViewById(R.id.lockscreenMessage);
         Button unlockPromptButton = findViewById(R.id.unlockPromptButton);
         LinearLayout unlockInputsContainer = findViewById(R.id.unlockInputsContainer);
         LinearLayout emergencyAppsContainer = findViewById(R.id.emergencyAppsContainer);
+
+        // Start countdown timer with remaining time
+        long remainingTimeMillis = lockEndTime - currentTime;
+        if (remainingTimeMillis <= 0) {
+            finish();
+            return;
+        }
+
+        // -----------------------------------------------------------
+        // Setting up Click Listeners
 
         // Initially Hide PIN Input and Keep Emergency Apps Visible
         unlockInputsContainer.setVisibility(View.GONE);
@@ -56,12 +69,7 @@ public class LockScreenActivity extends AppCompatActivity {
             }
         });
 
-        unlockButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkPinAndUnlock();
-            }
-        });
+        unlockButton.setOnClickListener(v -> checkPinAndUnlock());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -81,6 +89,8 @@ public class LockScreenActivity extends AppCompatActivity {
             }
         });
 
+        // Start Countdown Timer
+        startCountdownTimer(remainingTimeMillis , timerCountdown);
     }
 
     private void checkPinAndUnlock() {
@@ -104,4 +114,28 @@ public class LockScreenActivity extends AppCompatActivity {
             Toast.makeText(this, "Incorrect PIN!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void startCountdownTimer(long remainingTimeMillis, TextView timerCountdown) {
+        new android.os.CountDownTimer(remainingTimeMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long minutes = (millisUntilFinished / 1000) / 60;
+                long seconds = (millisUntilFinished / 1000) % 60;
+                timerCountdown.setText(String.format("%02d:%02d", minutes, seconds));
+            }
+
+            @Override
+            public void onFinish() {
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("isLocked", false);
+                editor.remove("lockEndTime"); // Remove saved lock end time
+                editor.apply();
+
+                Toast.makeText(LockScreenActivity.this, "Time's up! Focus Mode Ended.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }.start();
+    }
+
+
 }

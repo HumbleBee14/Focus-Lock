@@ -3,7 +3,7 @@
     <item
         android:id="@+id/home"
         android:icon="@drawable/ic_lock"
-        android:title="Home" />
+        android:title="Lock" />
 
     <item
         android:id="@+id/schedule"

@@ -27,14 +27,9 @@ public class AppBlockerService extends AccessibilityService {
     private boolean isAllowedApp(String packageName) {
         SharedPreferences preferences = getSharedPreferences("FocusLockPrefs", MODE_PRIVATE);
         Set<String> whitelistedApps = preferences.getStringSet("whitelisted_apps", new HashSet<>());
-
         boolean isAllowed = whitelistedApps.contains(packageName);
-        Log.d("FocusLock", "Checking App: " + packageName + " Allowed: " + isAllowed);
-
         return isAllowed;
     }
-
-
 
     private void launchLockScreen() {
         Intent intent = new Intent(this, LockScreenActivity.class);

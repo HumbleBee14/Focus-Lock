@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Basic Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF3B30</color>
-    <color name="deepBlue">#1A1C2C</color>
-    <color name="lightGrey">#B0B0B0</color>
+    <color name="fadedOrange">#FFA726</color> <!-- Light Orange Shade -->
+    <color name="darkOrange">#FB8C00</color> <!-- Darker Orange for Thumb -->
+    <color name="softGrey">#BDBDBD</color> <!-- Default Grey for Off State -->
+    <color name="lightGrey">#E0E0E0</color> <!-- Light Grey Thumb -->
+    <color name="blue_soft">#64B5F6</color>  <!-- Light Blue -->
+    <color name="blue_moon">#1976D2</color>  <!-- Dark Blue -->
+    <color name="yellow_soft">#FFEB3B</color>
+    <color name="gray">#BDBDBD</color>  <!-- Neutral Gray -->
+
+
+
+    <!-- App Background Colors -->
     <color name="luxuryBackground">#121212</color>
+    <color name="darkBackground">#1A1919</color>
+    <color name="lightBrownBackground">#8B6C42</color>
+
+    <!-- Primary Theme Colors -->
+    <color name="primaryTeal">#00796B</color>        <!-- Main Theme Color -->
+    <color name="darkTeal">#004D40</color>          <!-- Darker Shade for Contrast -->
+    <color name="lightTeal">#48A999</color>        <!-- Light Teal for Highlights -->
+    <color name="accentTeal">#1DE9B6</color>       <!-- Bright Teal for Accents -->
+    <color name="softTeal">#80CBC4</color>         <!-- Subtle Teal for Text/Unselected Items -->
+
+    <!-- Bottom Navigation Bar Colors -->
+    <color name="navigationBarColor">@color/primaryTeal</color>
+    <color name="bottomNavSelectedItem">@color/darkTeal</color>
+    <color name="bottomNavUnselectedItem">@color/softTeal</color>
+
+    <!-- Button Colors -->
     <color name="buttonPurple">#673AB7</color>
-    <color name="lightBrown">#56442E</color>
-    <color name="darkBackground">#121212</color>
-<!--    <color name="buttonBackground">#1E88E5</color>-->
-    <color name="buttonBackground">#6A1B9A</color> <!-- Purple Button -->
-    <color name="lightBrownBackground">#8B6C42</color> <!-- Light Brown Background -->
+    <color name="buttonBackground">#6A1B9A</color> <!-- Primary Button Purple -->
 </resources>

@@ -1,16 +1,46 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.FocusLock" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here -->
-        <item name="android:windowBackground">@color/deepBlue</item>
-        <item name="android:colorBackground">@color/darkBackground</item>
-        <item name="android:statusBarColor">@color/darkBackground</item>
-        <item name="android:navigationBarColor">@color/buttonBackground</item>
+    <style name="Base.Theme.FocusLock" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryTeal</item>
+        <item name="colorPrimaryVariant">@color/darkTeal</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorOnSecondary">@color/red</item>
+
+
+        <item name="android:colorBackground">@color/luxuryBackground</item>
+        <!--        <item name="android:background">@color/red</item>-->
+
+        <!-- Global Background for All Fragments -->
+<!--        <item name="android:windowBackground">"@color/darkBackground"</item>-->
+        <item name="android:windowBackground">#424242</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/blue_moon</item>
+
+        <!-- Force AppCompat styling for switches -->
+<!--                <item name="switchStyle">@style/CustomSwitch</item>-->
+
+        <!-- Remove Action Bar -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
     </style>
+
 
     <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
+
+    <style name="CustomSwitch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:track">@drawable/track_backgrounds</item>
+        <item name="android:thumb">@drawable/thumb_backgrounds</item>
+    </style>
+
 
     <style name="Theme.FocusLock" parent="Base.Theme.FocusLock" />
 </resources>

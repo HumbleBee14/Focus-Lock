@@ -20,8 +20,9 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="FocusLock"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:enableOnBackInvokedCallback="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.FocusLock"
         tools:targetApi="31">
@@ -45,36 +46,17 @@
             android:excludeFromRecents="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
-        <!-- Settings Activity -->
-        <activity
-            android:name=".SettingsActivity"
-            android:exported="true"
-            android:theme="@style/Theme.FocusLock" />
-
         <!-- Whitelist Activity -->
         <activity
             android:name=".WhitelistActivity"
             android:exported="true"
             android:theme="@style/Theme.FocusLock" />
 
-        <!-- Schedule Activity -->
-        <activity
-            android:name=".ScheduleActivity"
-            android:exported="true"
-            android:theme="@style/Theme.FocusLock" />
-
-        <!-- Analytics Activity -->
-        <activity
-            android:name=".AnalyticsActivity"
-            android:exported="true" />
-
-
-
         <!-- Accessibility Service for App Blocking -->
         <service
             android:name=".AppBlockerService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:exported="false"> <!-- Keep it false since it's only for this app -->
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>

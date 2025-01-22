@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,7 +55,6 @@ public class LockScreenActivity extends AppCompatActivity {
             finish();
             return;
         }
-
 
         // Normal behaviour if the device is not restarted
         // Retrieve saved lock end time

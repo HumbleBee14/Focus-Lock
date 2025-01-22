@@ -4,7 +4,11 @@ import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class AppBlockerService extends AccessibilityService {
     @Override
@@ -21,10 +25,16 @@ public class AppBlockerService extends AccessibilityService {
     }
 
     private boolean isAllowedApp(String packageName) {
-        return packageName.equals("com.android.phone") ||
-                packageName.equals("com.android.messaging") ||
-                packageName.equals("com.google.android.gm");
+        SharedPreferences preferences = getSharedPreferences("FocusLockPrefs", MODE_PRIVATE);
+        Set<String> whitelistedApps = preferences.getStringSet("whitelisted_apps", new HashSet<>());
+
+        boolean isAllowed = whitelistedApps.contains(packageName);
+        Log.d("FocusLock", "Checking App: " + packageName + " Allowed: " + isAllowed);
+
+        return isAllowed;
     }
+
+
 
     private void launchLockScreen() {
         Intent intent = new Intent(this, LockScreenActivity.class);

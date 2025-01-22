@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 public class MainActivity extends AppCompatActivity {
 
     private NumberPicker hoursPicker, minutesPicker;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         minutesPicker = findViewById(R.id.minutesPicker);
         selectedTimeDisplay = findViewById(R.id.selectedTimeDisplay);
         enableLockButton = findViewById(R.id.enableLockButton);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
 
         // Setup Number Pickers
@@ -49,16 +52,32 @@ public class MainActivity extends AppCompatActivity {
 
         // Default Values to 0h 30m on App Start
         hoursPicker.setValue(0);
-        minutesPicker.setValue(1); // 30 minutes corresponds to index 3 in minuteValues
+        minutesPicker.setValue(1); // index position corresponds to time in array
         updateSelectedTime();
 
-        // Set a click listener for the button
-        enableLockButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkAndStartLockService();
+        // Set a click listener for the lock button
+        enableLockButton.setOnClickListener(v -> checkAndStartLockService());
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.home) {
+                return true;
+            } else if (id == R.id.settings) {
+                Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            } else if (id == R.id.analytics) {
+                Toast.makeText(this, "Analytics Coming Soon", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.schedule) {
+                Toast.makeText(this, "Schedule Coming Soon", Toast.LENGTH_SHORT).show();
+                return true;
             }
+
+            return false;
         });
+
     }
 
     private void updateSelectedTime() {

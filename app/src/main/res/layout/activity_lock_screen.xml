@@ -95,29 +95,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-        <Button
-            android:id="@+id/emergencyCall"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/whitelistedAppsRecycler"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Call"
-            android:textColor="@color/white"
-            android:background="@drawable/rounded_button"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:scrollbars="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/unlockPromptButton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-        <Button
-            android:id="@+id/emergencySMS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SMS"
-            android:textColor="@color/white"
-            android:background="@drawable/rounded_button"/>
 
-        <Button
-            android:id="@+id/emergencyEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email"
-            android:textColor="@color/white"
-            android:background="@drawable/rounded_button"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

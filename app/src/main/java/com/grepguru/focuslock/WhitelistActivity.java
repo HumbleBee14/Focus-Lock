@@ -1,49 +1,103 @@
 package com.grepguru.focuslock;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
-public class WhitelistActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-    private CheckBox phoneCheckBox, smsCheckBox, emailCheckBox;
+import com.grepguru.focuslock.model.*;
+import com.grepguru.focuslock.ui.adapter.*;
+import com.grepguru.focuslock.utils.AppUtils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+
+
+public class WhitelistActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
     private Button saveButton;
-    private SharedPreferences preferences;
+    private List<SelectableAppModel> appList = new ArrayList<>();
+    private Set<String> defaultApps = new HashSet<>();
+    private Set<String> selectedApps = new HashSet<>();
+    //  private static final int MAX_SELECTION = 5; // Max additional apps
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_whitelist);
 
-        phoneCheckBox = findViewById(R.id.phoneCheckBox);
-        smsCheckBox = findViewById(R.id.smsCheckBox);
-        emailCheckBox = findViewById(R.id.emailCheckBox);
+        recyclerView = findViewById(R.id.whitelistRecyclerView);
         saveButton = findViewById(R.id.saveButton);
 
-        preferences = getSharedPreferences("FocusLockPrefs", MODE_PRIVATE);
+        // Define default apps (Call, SMS, Alarm)
+        defaultApps = AppUtils.getDefaultApps(this);
+        selectedApps.addAll(defaultApps); // Pre-select default apps
 
-        // Load saved values
-        phoneCheckBox.setChecked(preferences.getBoolean("allow_phone", false));
-        smsCheckBox.setChecked(preferences.getBoolean("allow_sms", false));
-        emailCheckBox.setChecked(preferences.getBoolean("allow_email", false));
+        // Load all installed apps dynamically
+        loadInstalledApps();
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveWhitelist();
-            }
+        // Setup RecyclerView
+        WhitelistAdapter adapter = new WhitelistAdapter(appList, selectedApps);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        // Save Button Click Listener
+        saveButton.setOnClickListener(v -> {
+            saveWhitelist();
         });
     }
 
+    private void loadInstalledApps() {
+        PackageManager pm = getPackageManager();
+        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        // Get only third-party apps with a launcher icon
+        List<ResolveInfo> resolvedApps = pm.queryIntentActivities(mainIntent, 0);
+
+        for (ResolveInfo resolveInfo : resolvedApps) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            boolean isDefault = defaultApps.contains(packageName);
+            boolean isSelected = selectedApps.contains(packageName); // Preserve selection
+            Drawable icon;
+            try {
+                icon = pm.getApplicationIcon(packageName);
+            } catch (PackageManager.NameNotFoundException e) {
+                icon = getDrawable(R.drawable.default_app_icon); // Fallback icon
+            }
+
+            // FILTER SYSTEM APPS HERE
+            ApplicationInfo appInfo;
+            try {
+                appInfo = pm.getApplicationInfo(packageName, 0);
+                if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) { // Only include non-system apps
+                    appList.add(new SelectableAppModel(packageName, resolveInfo.activityInfo.loadLabel(pm).toString(), isDefault, isSelected, icon));
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     private void saveWhitelist() {
+        SharedPreferences preferences = getSharedPreferences("FocusLockPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("allow_phone", phoneCheckBox.isChecked());
-        editor.putBoolean("allow_sms", smsCheckBox.isChecked());
-        editor.putBoolean("allow_email", emailCheckBox.isChecked());
+        editor.putStringSet("whitelisted_apps", selectedApps);
         editor.apply();
 
         Toast.makeText(this, "Whitelist Updated!", Toast.LENGTH_SHORT).show();

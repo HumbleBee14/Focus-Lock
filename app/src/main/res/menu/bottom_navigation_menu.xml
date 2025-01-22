@@ -1,18 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/nav_lock"
+        android:id="@+id/home"
         android:icon="@drawable/ic_lock"
-        android:title="Lock" />
+        android:title="Home" />
+
     <item
-        android:id="@+id/nav_timer"
+        android:id="@+id/schedule"
         android:icon="@drawable/ic_timer"
-        android:title="Timer" />
+        android:title="Schedule" />
+
     <item
-        android:id="@+id/nav_analytics"
+        android:id="@+id/analytics"
         android:icon="@drawable/ic_analytics"
         android:title="Analytics" />
+
     <item
-        android:id="@+id/nav_settings"
+        android:id="@+id/settings"
         android:icon="@drawable/ic_settings"
         android:title="Settings" />
+
 </menu>
+

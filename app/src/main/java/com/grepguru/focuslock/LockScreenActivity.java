@@ -3,6 +3,8 @@ package com.grepguru.focuslock;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +15,17 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.grepguru.focuslock.model.*;
+import com.grepguru.focuslock.ui.adapter.*;
+import com.grepguru.focuslock.utils.AppUtils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class LockScreenActivity extends AppCompatActivity {
 
@@ -26,12 +39,7 @@ public class LockScreenActivity extends AppCompatActivity {
 
         // Detect reboot using system uptime
         long storedUptime = preferences.getLong("uptimeAtLock", -1);
-//        System.out.println("Stored Uptime (LSA): " + " " + storedUptime);
-
         long currentUptime = android.os.SystemClock.elapsedRealtime();
-//        System.out.println("Current Uptime (LSA): " + " " + currentUptime);
-//        System.out.println("Difference: " + " " + (currentUptime - storedUptime));
-
 
         // Check if the device restarted using uptime OR if the wasDeviceRestarted flag is set
         boolean wasRestarted = preferences.getBoolean("wasDeviceRestarted", false);
@@ -40,10 +48,10 @@ public class LockScreenActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isLocked", false);
             editor.remove("lockEndTime");
-            editor.putBoolean("wasDeviceRestarted", false); // Reset it for safety
+            editor.putBoolean("wasDeviceRestarted", false);
             editor.apply();
 
-            finish(); // Just exit LockScreen
+            finish();
             return;
         }
 
@@ -67,13 +75,15 @@ public class LockScreenActivity extends AppCompatActivity {
             return;
         }
 
+        // -----------------------------------------------------------
+        // Setting up UI
         setContentView(R.layout.activity_lock_screen);
 
         // Initializing UI Components
         pinInput = findViewById(R.id.pinInput);
         Button unlockButton = findViewById(R.id.unlockButton);
         TextView timerCountdown = findViewById(R.id.timerCountdown);
-//        TextView lockMessage = findViewById(R.id.lockscreenMessage);
+        //  TextView lockMessage = findViewById(R.id.lockscreenMessage);
         Button unlockPromptButton = findViewById(R.id.unlockPromptButton);
         LinearLayout unlockInputsContainer = findViewById(R.id.unlockInputsContainer);
         LinearLayout emergencyAppsContainer = findViewById(R.id.emergencyAppsContainer);
@@ -84,6 +94,32 @@ public class LockScreenActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        // Whitelisted Apps
+        RecyclerView whitelistedAppsRecycler = findViewById(R.id.whitelistedAppsRecycler);
+        whitelistedAppsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        SharedPreferences preferences = getSharedPreferences("FocusLockPrefs", MODE_PRIVATE);
+        Set<String> whitelistedApps = preferences.getStringSet("whitelisted_apps", new HashSet<>());
+
+        // Add Default Apps Explicitly
+        whitelistedApps.addAll(AppUtils.getDefaultApps(this));
+
+        List<AppModel> allowedApps = new ArrayList<>();
+        PackageManager pm = getPackageManager();
+        for (String packageName : whitelistedApps) {
+            try {
+                Drawable icon = pm.getApplicationIcon(packageName);
+                String appName = pm.getApplicationLabel(pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA)).toString();
+                allowedApps.add(new AppModel(packageName, appName, true, icon)); // Mark as default
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Set adapter
+        whitelistedAppsRecycler.setAdapter(new AllowedAppsAdapter(this, allowedApps));
+
 
         // -----------------------------------------------------------
         // Setting up Click Listeners
@@ -166,6 +202,7 @@ public class LockScreenActivity extends AppCompatActivity {
             Toast.makeText(this, "Incorrect PIN!", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void startCountdownTimer(long remainingTimeMillis, TextView timerCountdown) {
         new android.os.CountDownTimer(remainingTimeMillis, 1000) {

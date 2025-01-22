@@ -4,6 +4,17 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <queries>
+        <!-- Essential system apps -->
+        <package android:name="com.android.phone"/>  <!-- Calls -->
+        <package android:name="com.google.android.dialer"/>
+        <package android:name="com.android.mms"/>  <!-- SMS -->
+        <package android:name="com.google.android.apps.messaging"/>
+        <package android:name="com.android.deskclock"/>  <!-- Clock -->
+        <package android:name="com.google.android.deskclock"/>
+        <package android:name="com.sec.android.app.clockpackage"/>  <!-- Samsung Clock -->
+    </queries>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -34,6 +45,31 @@
             android:excludeFromRecents="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
+        <!-- Settings Activity -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.FocusLock" />
+
+        <!-- Whitelist Activity -->
+        <activity
+            android:name=".WhitelistActivity"
+            android:exported="true"
+            android:theme="@style/Theme.FocusLock" />
+
+        <!-- Schedule Activity -->
+        <activity
+            android:name=".ScheduleActivity"
+            android:exported="true"
+            android:theme="@style/Theme.FocusLock" />
+
+        <!-- Analytics Activity -->
+        <activity
+            android:name=".AnalyticsActivity"
+            android:exported="true" />
+
+
+
         <!-- Accessibility Service for App Blocking -->
         <service
             android:name=".AppBlockerService"
@@ -55,5 +91,7 @@
         </receiver>
 
     </application>
+
+
 
 </manifest>
